@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
     private EditText mWebsiteEditText;
+    private EditText mLocationEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mWebsiteEditText = findViewById(R.id.website_edittext);
+        mLocationEditText = findViewById(R.id.location_edittext);
     }
 
     public void openWebsite(View view) {
@@ -25,6 +27,19 @@ public class MainActivity extends AppCompatActivity {
         Uri webpage = Uri.parse(url);
 
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+
+        if (intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        } else {
+            Log.d("implicitIntents", "openWebsite: Can't handle this!");
+        }
+    }
+
+    public void openLocation(View view) {
+        String loc = mLocationEditText.getText().toString();
+        Uri addressUri = Uri.parse("geo:0,0?q=" + loc);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, addressUri);
 
         if (intent.resolveActivity(getPackageManager()) != null){
             startActivity(intent);
