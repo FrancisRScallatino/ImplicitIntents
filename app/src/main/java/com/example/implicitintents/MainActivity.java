@@ -1,6 +1,7 @@
 package com.example.implicitintents;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity {
     private EditText mWebsiteEditText;
     private EditText mLocationEditText;
+    private EditText mShareEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         mWebsiteEditText = findViewById(R.id.website_edittext);
         mLocationEditText = findViewById(R.id.location_edittext);
+        mShareEditText = findViewById(R.id.share_edittext);
     }
 
     public void openWebsite(View view) {
@@ -46,5 +49,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("implicitIntents", "openWebsite: Can't handle this!");
         }
+    }
+
+    public void shareText(View view) {
+        String txt = mShareEditText.getText().toString();
+        String mimeType = "text/plain";
+
+        ShareCompat.IntentBuilder
+                .from(this)
+                .setType(mimeType)
+                .setChooserTitle(R.string.share_text_with)
+                .setText(txt)
+                .startChooser();
     }
 }
